@@ -15,15 +15,17 @@
                         @method('POST')
                         @csrf
                         <div class="form-floating mb-3">
-                            <input name="email" class="form-control @error('email') is-invalid @enderror" id="inputEmail" type="email" placeholder="Enter email..."
-                                autocomplete="username" value="{{old('email')}}">
+                            <input name="email" @class([ 'form-control' , 'is-invalid'=> isInvalidError('email')
+                            ]) id="inputEmail" type="email" placeholder="Enter email..."
+                            autocomplete="username" value="{{old('email')}}">
                             <label for="inputEmail">Email</label>
                             @error('email')
                             <div class="invalid-feedback">{{$message}}</div>
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <input name="password" class="form-control @error('password') is-invalid @enderror" id="inputPassword" type="password" placeholder="Enter password..."
+                            <input name="password" @class([ 'form-control' , 'is-invalid'=> isInvalidError('password')
+                            ]) id="inputPassword" type="password" placeholder="Enter password..."
                                 autocomplete="current-password">
                             <label for="inputPassword">Password</label>
                             @error('password')
