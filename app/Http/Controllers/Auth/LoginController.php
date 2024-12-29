@@ -3,47 +3,29 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-
+use App\Http\Requests\Auth\LoginRequest;
 
 class LoginController extends Controller
 {
+    // This method displays the login page with necessary data passed to the view.
     public function index()
     {
+        // Renders the login view.
         return view("auth.login.index", [
-            'routeAction' => route('auth.login.action'),
-            'routeHome' => route('site.home'),
-            'routeForgotPassword' => 'todo-forgot-password'
+            'routeAction' => route('auth.login.action'), // The route to handle the login action.
+            'routeHome' => route('site.home'), // The route to the home page.
+            'routeForgotPassword' => 'todo-forgot-password' // Placeholder for the forgot password route.
         ]);
     }
 
-    public function action(Request $request)
+    // This method handles the login action after the user submits the login form.
+    public function action(LoginRequest $request)
     {
+        $request->authenticate(); // Authenticates the user using the validated data in the LoginRequest.
 
-        $validated = $request->validate([
-            'email' => [
-                'required',
-                'string',
-                'email'
-            ],
-            'password' => [
-                'required',
-                'string',
-            ]
-        ]);
+        $request->session()->regenerate(); // Regenerates the session to prevent session fixation attacks.
 
-        $authenticate = Auth::attempt($validated);
-
-        if ($authenticate) {
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('dashboard.home', absolute: false));
-        }
-
-        throw ValidationException::withMessages([
-            'email' => trans('auth.failed')
-        ]);
+        // Redirects the user to their intended destination or the dashboard home if no previous URL is set.
+        return redirect()->intended(route('dashboard.home', absolute: false));
     }
 }
