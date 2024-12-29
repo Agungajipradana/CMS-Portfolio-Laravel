@@ -31,7 +31,10 @@
                                     <a class="small" href="{{ $routeHome }}">Home</a> /
                                     <a class="small" href="{{ $routeForgotPassword }}">Forgot Password?</a>
                                 </span>
-                                <button type="submit" class="btn btn-primary">Login</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                    Login
+                                </button>
                             </div>
                         </form>
                     </div>
