@@ -13,6 +13,17 @@ function sidebarToggle() {
     }
 }
 
+function logoutSubmit() {
+    const actionLogout = document.getElementById("actionLogout");
+    const formLogout = document.getElementById("formLogout");
+
+    actionLogout.addEventListener("click", (event) => {
+        event.preventDefault();
+        formLogout.submit();
+    });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
     sidebarToggle();
+    logoutSubmit();
 });
