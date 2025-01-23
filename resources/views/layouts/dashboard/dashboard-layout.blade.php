@@ -33,7 +33,7 @@
                     <h1 class="mt-4">
                         @yield('title')
                     </h1>
-                    @include('layouts.dashboard._breadcrumb')
+                    @yield('breadcrumb')
                     @yield('content')
                 </div>
             </main>

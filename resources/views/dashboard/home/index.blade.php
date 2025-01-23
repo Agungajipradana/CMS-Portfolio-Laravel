@@ -2,6 +2,10 @@
 
 @section('title', 'Dashboad page')
 
+@section('breadcrumb')
+    {{ Breadcrumbs::render('dashboard') }}
+@endsection
+
 @section('content')
- 
+    Home
 @endsection
