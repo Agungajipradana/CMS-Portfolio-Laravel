@@ -9,6 +9,57 @@
         'profile' => '/',
         'logout' => route('auth.logout'),
     ];
+
+    $sidenavmenu = [
+        [
+            'heading' => 'Core',
+            'menus' => [
+                [
+                    'title' => 'Dashboard',
+                    'icon' => 'bi-speedometer2',
+                    'route' => '/',
+                ],
+            ],
+        ],
+        [
+            'heading' => 'Dropdown',
+            'menus' => [
+                [
+                    'title' => 'Link 1',
+                    'icon' => 'bi-share',
+                    'dropdown' => [
+                        [
+                            'title' => 'Link 1.1',
+                            'route' => '/',
+                        ],
+                        [
+                            'title' => 'Link 1.2',
+                            'route' => '/',
+                        ],
+                    ],
+                ],
+                [
+                    'title' => 'Link 2',
+                    'icon' => 'bi-share',
+                    'dropdown' => [
+                        [
+                            'title' => 'Link 2.1',
+                            'route' => '/',
+                        ],
+                        [
+                            'title' => 'Link 2.2',
+                            'route' => '/',
+                        ],
+                    ],
+                ],
+                [
+                    'title' => 'Link 3',
+                    'icon' => 'bi-share',
+                    'route' => '/',
+                ],
+            ],
+        ],
+    ];
 @endphp
 
 <!DOCTYPE html>
