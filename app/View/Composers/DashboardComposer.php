@@ -2,8 +2,9 @@
 
 namespace App\View\Composers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth; // Import Auth facade for accessing the authenticated user
+use Illuminate\Support\Facades\Request; // Import Request facade to access the current request URL
+use Illuminate\View\View; // Import the View class to work with views
 
 class DashboardComposer
 {
@@ -35,10 +36,58 @@ class DashboardComposer
         ]);
 
         // Add a side navigation menu to the view
-        $view->with('sidenavmenu', $this->getMenus()); // Fetch and inject the menu structure
+        $view->with('sidenavmenu', $this->generateMenu()); // Fetch and inject the menu structure
     }
 
-     // This method returns the menu structure for the sidebar
+    // This method generates the side navigation menu and sets the active state based on the current route
+    private function generateMenu()
+    {
+        $menus = $this->getMenus(); // Fetch the menu structure
+        $this->setMenuActive($menus); // Set the active state for the menus based on the current route
+        return $menus; // Return the modified menu structure
+    }
+
+    // This method sets the active state for the menus based on the current request URL
+    private function setMenuActive(&$menus)
+    {
+        // Recursive function to traverse the menu items and mark them as active if their route matches the current URL
+        $setMenuActive = function (&$menu) use (&$setMenuActive) {
+            $isActive = false; // Variable to track if any menu item is active
+
+            // Iterate through each menu item
+            foreach ($menu as &$item) {
+                // If the menu item has a dropdown, check its items
+                if (isset($item['dropdown'])) {
+                    // Recursively check the dropdown items
+                    $item['active'] = $setMenuActive($item['dropdown']);
+                    // If no dropdown, compare the route of the item with the current request URL
+                } else {
+                    // Set active if the route matches
+                    $item['active'] = ($item['route'] == Request::fullUrl());
+                }
+
+                // Track if any item is active in this menu
+                $isActive = $isActive || $item['active'];
+            }
+
+            // Return if any item in this menu is active
+            return $isActive;
+        };
+
+        // Iterate through each menu to check and set active state for submenus
+        foreach ($menus as &$menu) {
+            // If the menu contains submenus
+            if (isset($menu['menus'])) {
+                // Recursively set the active state for the submenus
+                $setMenuActive($menu['menus']);
+            }
+        }
+
+        // Return the modified menus with active states set
+        return $menus;
+    }
+
+    // This method returns the menu structure for the sidebar
     private function getMenus(): array
     {
         return [
@@ -48,7 +97,7 @@ class DashboardComposer
                     [
                         'title' => 'Dashboard',
                         'icon' => 'bi-speedometer2',
-                        'route' => '/',
+                        'route' => route('dashboard.home'),
                     ],
                 ],
             ],

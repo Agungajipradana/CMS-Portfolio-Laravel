@@ -15,8 +15,12 @@
                                 @php
                                     $databstarget = 'collapseLink' . $loop->index + 1;
                                 @endphp
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                    data-bs-target="#{{ $databstarget }}" aria-expanded="false"
+                                <a @class([
+                                    'nav-link',
+                                    'collapsed' => !$menu['active'],
+                                    'active' => $menu['active'],
+                                ]) href="#" data-bs-toggle="collapse"
+                                    data-bs-target="#{{ $databstarget }}" aria-expanded={{ $menu['active'] }}
                                     aria-controls="{{ $databstarget }}">
                                     <div class="sb-nav-link-icon">
                                         <x-icon.bs-icon name="{{ $menu['icon'] }}" />
@@ -27,18 +31,18 @@
                                     </div>
                                 </a>
 
-                                <div class="collapse" id="{{ $databstarget }}" aria-labelledby="{{ $menu['title'] }}"
-                                    data-bs-parent="#sidenavAccordion">
+                                <div @class(['collapse', 'show' => $menu['active']]) id="{{ $databstarget }}"
+                                    aria-labelledby="{{ $menu['title'] }}" data-bs-parent="#sidenavAccordion">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         @foreach ($menu['dropdown'] as $dropdown)
-                                            <a class="nav-link" href="{{ $dropdown['route'] }}">
+                                            <a @class(['nav-link', 'active' => $dropdown['active']]) href="{{ $dropdown['route'] }}">
                                                 {{ $dropdown['title'] }}
                                             </a>
                                         @endforeach
                                     </nav>
                                 </div>
                             @else
-                                <a class="nav-link" href="{{ $menu['route'] }}">
+                                <a @class(['nav-link', 'active' => $menu['active']]) href="{{ $menu['route'] }}">
                                     <div class="sb-nav-link-icon">
                                         <x-icon.bs-icon name="{{ $menu['icon'] }}" />
                                     </div>
